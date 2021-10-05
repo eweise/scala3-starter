@@ -1,2 +1,2 @@
-# scala3-starter
-Simple app using scala3 compatible libraries.
+# Todos
+An example using Scala 3
