@@ -13,6 +13,8 @@ lazy val root = project
       "org.postgresql" % "postgresql" % "42.2.24",
       "org.scalikejdbc" %% "scalikejdbc" % "4.0.0-RC2",
       "org.scalikejdbc" %% "scalikejdbc-config"  % "4.0.0-RC2",
+      "org.scalikejdbc" %% "scalikejdbc-interpolation" % "4.0.0-RC2",
+      "org.scalikejdbc" %% "scalikejdbc-syntax-support-macro" % "4.0.0-RC2",
       "com.typesafe" % "config" % "1.4.1",
       "ch.qos.logback"  %  "logback-classic"   % "1.2.6",
       // ScalaTest has already 3.0 implementation

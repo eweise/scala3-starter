@@ -1,8 +1,12 @@
+package eweise
+
 import java.time.LocalDate
+import java.util.UUID
 
 case class Todo(
+                 id : UUID = UUID.randomUUID(),
                  title: String,
                  description: Option[String],
-                 duDate: Option[LocalDate],
-                 createdDate: LocalDate,
+                 dueDate: Option[LocalDate] = Option.empty,
+                 createdDate: LocalDate = LocalDate.now(),
                )
