@@ -15,4 +15,7 @@ object DB {
       validationQuery = "select 1 from dual")
 
     ConnectionPool.add("postgres-todos", url, user, password, settings)
+    
+    
 }
+

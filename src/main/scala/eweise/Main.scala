@@ -1,8 +1,14 @@
+package eweise
+
 import scalikejdbc.config.DBs
 
 object MinimalApplication extends cask.MainRoutes {
 
   DBs.setupAll()
+
+  val todoRepo = TodoRepository()
+
+  todoRepo.initialize()
 
   @cask.get("/")
   def hello() = "Hello World!"
