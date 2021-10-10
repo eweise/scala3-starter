@@ -22,6 +22,18 @@ class TodoRepositoryTestSuite extends AnyFunSuite {
     }
   }
 
+  test("delete Todo") {
+    withFixture {
+      DB localTx { implicit session =>
+        val newTodo = Todo(title = "hello", description = Some("world"))
+        val repo = TodoRepository()
+        repo.createTodo(newTodo)
+        repo.deleteTodo(newTodo.id)
+        repo.findAllTodos.map {found => found.id should not be newTodo.id}
+      }
+    }
+  }
+
   test("retrieve all todos") {
     withFixture {
       DB localTx { implicit session =>
