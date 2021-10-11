@@ -2,6 +2,8 @@ package eweise
 
 import scalikejdbc.config.DBs
 
+import java.time.LocalDate
+
 object MinimalApplication extends cask.MainRoutes {
 
   DBs.setupAll()
@@ -9,6 +11,9 @@ object MinimalApplication extends cask.MainRoutes {
   val todoRepo = TodoRepository()
 
   todoRepo.initialize()
+
+//  implicit val foo: java.time.LocalDate = upickle.default.macroRW[java.time.LocalDate]
+//  upickle.default.macroRW[Todo]
 
   @cask.get("/")
   def hello() = "Hello World!"

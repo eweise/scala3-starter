@@ -2,10 +2,12 @@ package eweise
 
 import org.scalatest.funsuite.AnyFunSuite
 import scalikejdbc.config.DBs
-import scalikejdbc._
-import org.scalatest._
-import matchers.should._
-import matchers.should.Matchers._
+import scalikejdbc.*
+import org.scalatest.*
+import matchers.should.*
+import matchers.should.Matchers.*
+
+import scala.Right
 
 class TodoRepositoryTestSuite extends AnyFunSuite {
   def withFixture(f: => Unit): Unit = {
@@ -18,6 +20,19 @@ class TodoRepositoryTestSuite extends AnyFunSuite {
       DB localTx { implicit session =>
         val newTodo = Todo(title = "hello", description = Some("world"))
         TodoRepository().createTodo(newTodo)
+      }
+    }
+  }
+
+  test("delete Todo") {
+    withFixture {
+      DB localTx { implicit session =>
+        val newTodo = Todo(title = "hello", description = Some("world"))
+        val repo = TodoRepository()
+        repo.createTodo(newTodo)
+        repo.deleteTodo(newTodo.id)
+        val result = repo.findAllTodos
+        result.map { found => found.id should not be newTodo.id }
       }
     }
   }

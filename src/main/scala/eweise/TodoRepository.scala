@@ -23,9 +23,17 @@ class TodoRepository {
          ${todo.createdDate})""".update.apply()
   }
 
-  def findAllTodos(using s: DBSession = AutoSession):List[Todo] = {
+  def findAllTodos(using s: DBSession = AutoSession): List[Todo] = {
     val t = (TodoSupport.syntax("t"))
     sql"select ${t.result.*} from ${TodoSupport.as(t)}".map(TodoSupport(t)).list.apply()
+  }
+
+  def deleteTodo(id: UUID)(using s: DBSession = AutoSession): Unit = {
+    val t = (TodoSupport.syntax("t"))
+    val c = TodoSupport.column
+    val nbrDeleted = sql"delete from ${TodoSupport.as(t)} where ${c.id} = ${id}".update.apply()
+    if nbrDeleted != 1 then
+      throw new Exception(s"delete not success for todo.id=${id}")
   }
 
   def initialize(implicit s: DBSession = AutoSession): Unit = {
