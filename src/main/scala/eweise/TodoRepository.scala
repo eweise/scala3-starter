@@ -33,7 +33,7 @@ class TodoRepository {
     val c = TodoSupport.column
     val nbrDeleted = sql"delete from ${TodoSupport.as(t)} where ${c.id} = ${id}".update.apply()
     if nbrDeleted != 1 then
-        throw new Exception(s"delete not success for todo.id=${id}")
+      throw new Exception(s"delete not success for todo.id=${id}")
   }
 
   def initialize(implicit s: DBSession = AutoSession): Unit = {

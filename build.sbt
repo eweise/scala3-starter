@@ -10,6 +10,7 @@ lazy val root = project
 
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "cask" % "0.7.12",
+      "com.lihaoyi" %% "upickle" % "1.4.2",
       "org.postgresql" % "postgresql" % "42.2.24",
       "org.scalikejdbc" %% "scalikejdbc" % "4.0.0-RC2",
       "org.scalikejdbc" %% "scalikejdbc-config"  % "4.0.0-RC2",
