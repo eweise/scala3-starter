@@ -9,4 +9,5 @@ case class Todo(
                  description: Option[String] = None,
                  dueDate: Option[LocalDate] = None,
                  createdDate: LocalDate = LocalDate.now(),
+                 completed:Boolean = false
                )

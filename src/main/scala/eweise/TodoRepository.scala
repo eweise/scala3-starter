@@ -10,7 +10,7 @@ class TodoRepository {
   def createTodo(todo: Todo)(using s: DBSession = AutoSession): Unit = {
     val c = TodoSupport.column
     val id =
-    sql"""insert into todo (
+      sql"""insert into todo (
          ${c.id},
          ${c.title},
          ${c.description},
@@ -25,26 +25,29 @@ class TodoRepository {
 
   def findAllTodos(using s: DBSession = AutoSession): List[Todo] = {
     val t = (TodoSupport.syntax("t"))
-    sql"select ${t.result.*} from ${TodoSupport.as(t)}".map(TodoSupport(t)).list.apply()
+    sql"select ${t.result.*} from ${TodoSupport.as(t)} where is_complete = false".map(TodoSupport(t)).list.apply()
   }
 
-  def deleteTodo(id: UUID)(using s: DBSession = AutoSession): Unit = {
+  def complete(id: UUID, isComplete: Boolean)(using s: DBSession = AutoSession): Unit = {
     val t = (TodoSupport.syntax("t"))
     val c = TodoSupport.column
-    val nbrDeleted = sql"delete from ${TodoSupport.as(t)} where ${c.id} = ${id}".update.apply()
+    val nbrDeleted = sql"update ${TodoSupport.as(t)} set is_complete = ${isComplete} where ${c.id} = ${id}".update.apply()
     if nbrDeleted != 1 then
       throw new Exception(s"delete not success for todo.id=${id}")
   }
 
-  def initialize(implicit s: DBSession = AutoSession): Unit = {
-    sql"""create table if not exists todo (
+  def initialize(): Unit = {
+    DB localTx { implicit session =>
+      sql"""create table if not exists todo (
          id uuid not null,
          title text not null,
          description text,
          due_date timestamp without time zone,
+         is_complete bool default false,
          created_date timestamp without time zone not null,
           CONSTRAINT todo_pkey PRIMARY KEY (id))
                     """.update.apply()
+    }
   }
 }
 
