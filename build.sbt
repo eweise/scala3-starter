@@ -13,14 +13,17 @@ lazy val root = project
       "com.lihaoyi" %% "upickle" % "1.4.2",
       "org.postgresql" % "postgresql" % "42.2.24",
       "org.scalikejdbc" %% "scalikejdbc" % "4.0.0-RC2",
-      "org.scalikejdbc" %% "scalikejdbc-config"  % "4.0.0-RC2",
+      "org.scalikejdbc" %% "scalikejdbc-config" % "4.0.0-RC2",
       "org.scalikejdbc" %% "scalikejdbc-interpolation" % "4.0.0-RC2",
       "org.scalikejdbc" %% "scalikejdbc-syntax-support-macro" % "4.0.0-RC2",
       "com.typesafe" % "config" % "1.4.1",
-      "ch.qos.logback"  %  "logback-classic"   % "1.2.6",
+      "ch.qos.logback" % "logback-classic" % "1.2.6",
       // ScalaTest has already 3.0 implementation
       "org.scalactic" %% "scalactic" % "3.2.9",
       "org.scalatest" %% "scalatest" % "3.2.9" % "test",
-      "org.scalatest" %% "scalatest-flatspec" % "3.2.9" % "test"
+      "org.scalatest" %% "scalatest-flatspec" % "3.2.9" % "test",
+      "io.circe" %% "circe-core" % "0.14.1",
+      "io.circe" %% "circe-generic" % "0.14.1",
+      "io.circe" %% "circe-parser" % "0.14.1"
     )
   )

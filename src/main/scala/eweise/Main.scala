@@ -1,10 +1,21 @@
 package eweise
 
+import io.circe.Encoder
 import scalikejdbc.config.DBs
+import io.circe.*
+import io.circe.generic.semiauto.deriveEncoder
 
 import java.time.LocalDate
+import io.circe.syntax.*
+import io.circe.parser.decode
+import io.circe.*
+import io.circe.generic.semiauto.*
+import scalikejdbc.DB
+
 
 object MinimalApplication extends cask.MainRoutes {
+  implicit val todoEncoder: Encoder[TodoRequest] = deriveEncoder[TodoRequest]
+  implicit val todoDecoder: Decoder[TodoRequest] = deriveDecoder[TodoRequest]
 
   DBs.setupAll()
 
@@ -12,21 +23,19 @@ object MinimalApplication extends cask.MainRoutes {
 
   todoRepo.initialize()
 
-  //  implicit val foo: java.time.LocalDate = upickle.default.macroRW[java.time.LocalDate]
-  //  upickle.default.macroRW[Todo]
-
   @cask.get("/")
   def hello() = "Hello World!"
 
   @cask.post("/todo")
-  def doThing(request: cask.Request) = {
-    val one = "world"
+  def postTodo(request: cask.Request) = {
     val text = request.text()
-    val json = ujson.read(text)
-    val todo = Todo(
-      title = json("title").str,
-      description = Some(json("description").str)
-    )
+    decode[TodoRequest](text) match
+      case Left(failure) =>
+        println(failure)
+      case Right(todoRequest) =>
+        DB localTx { implicit session =>
+          todoRepo.createTodo(todoRequest.toModel())
+        }
   }
 
   override def port: Int = 8082

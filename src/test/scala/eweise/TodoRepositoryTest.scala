@@ -30,7 +30,7 @@ class TodoRepositoryTestSuite extends AnyFunSuite {
         val newTodo = Todo(title = "hello", description = Some("world"))
         val repo = TodoRepository()
         repo.createTodo(newTodo)
-        repo.deleteTodo(newTodo.id)
+        repo.deleteTodo(newTodo.id.get)
         val result = repo.findAllTodos
         result.map { found => found.id should not be newTodo.id }
       }

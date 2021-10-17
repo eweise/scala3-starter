@@ -9,14 +9,14 @@ class TodoRepository {
 
   def createTodo(todo: Todo)(using s: DBSession = AutoSession): Unit = {
     val c = TodoSupport.column
-
+    val id =
     sql"""insert into todo (
          ${c.id},
          ${c.title},
          ${c.description},
          ${c.dueDate}, ${c.createdDate})
          values (
-         uuid(${todo.id.toString}),
+         uuid(${todo.id.get.toString}),
          ${todo.title},
          ${todo.description},
          ${todo.dueDate},
@@ -37,13 +37,12 @@ class TodoRepository {
   }
 
   def initialize(implicit s: DBSession = AutoSession): Unit = {
-    val c = TodoSupport.column
     sql"""create table if not exists todo (
-         ${c.id} uuid not null,
-         ${c.title} text not null,
-         ${c.description} text,
-         ${c.dueDate} timestamp without time zone,
-         ${c.createdDate} timestamp without time zone not null,
+         id uuid not null,
+         title text not null,
+         description text,
+         due_date timestamp without time zone,
+         created_date timestamp without time zone not null,
           CONSTRAINT todo_pkey PRIMARY KEY (id))
                     """.update.apply()
   }
@@ -56,7 +55,7 @@ object TodoSupport extends SQLSyntaxSupport[Todo] {
     apply(o.resultName)(rs)
 
   def apply(g: ResultName[Todo])(rs: WrappedResultSet) = eweise.Todo(
-    id = UUID.fromString(rs.string(g.id)),
+    id = Some(UUID.fromString(rs.string(g.id))),
     title = rs.string(g.title),
     description = rs.stringOpt(g.description),
     dueDate = rs.localDateOpt(g.dueDate),
