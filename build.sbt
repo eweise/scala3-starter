@@ -18,6 +18,7 @@ lazy val root = project
       "org.scalikejdbc" %% "scalikejdbc-syntax-support-macro" % "4.0.0-RC2",
       "com.typesafe" % "config" % "1.4.1",
       "ch.qos.logback" % "logback-classic" % "1.2.6",
+      "org.flywaydb" % "flyway-core" % "8.0.1",
       // ScalaTest has already 3.0 implementation
       "org.scalactic" %% "scalactic" % "3.2.9",
       "org.scalatest" %% "scalatest" % "3.2.9" % "test",

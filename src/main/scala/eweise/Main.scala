@@ -22,11 +22,16 @@ object MinimalApplication extends cask.MainRoutes {
 
   override def port: Int = 8082
 
+  import com.typesafe.config.Config
+  import com.typesafe.config.ConfigFactory
+
+  val conf: Config = ConfigFactory.load()
+
   DBs.setupAll()
 
-  val todoRepo = TodoRepository()
+  new Migrator(conf)
 
-  todoRepo.initialize()
+  val todoRepo = TodoRepository()
 
   @cask.get("/")
   def ping() = "todos"

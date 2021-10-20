@@ -1,5 +1,6 @@
 package eweise
 
+import eweise.MinimalApplication.todoRepo
 import org.scalatest.funsuite.AnyFunSuite
 import scalikejdbc.config.DBs
 import scalikejdbc.*

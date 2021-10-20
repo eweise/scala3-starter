@@ -35,20 +35,6 @@ class TodoRepository {
     if nbrDeleted != 1 then
       throw new Exception(s"delete not success for todo.id=${id}")
   }
-
-  def initialize(): Unit = {
-    DB localTx { implicit session =>
-      sql"""create table if not exists todo (
-         id uuid not null,
-         title text not null,
-         description text,
-         due_date timestamp without time zone,
-         is_complete bool default false,
-         created_date timestamp without time zone not null,
-          CONSTRAINT todo_pkey PRIMARY KEY (id))
-                    """.update.apply()
-    }
-  }
 }
 
 object TodoSupport extends SQLSyntaxSupport[Todo] {
