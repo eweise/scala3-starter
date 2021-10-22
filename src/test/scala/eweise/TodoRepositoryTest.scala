@@ -33,7 +33,9 @@ class TodoRepositoryTestSuite extends AnyFunSuite {
         repo.createTodo(newTodo)
         repo.complete(newTodo.id.get, true)
         val result = repo.findAllTodos
-        result.map { found => found.id should not be newTodo.id }
+        result.map { found =>
+          found.id should not be newTodo.id
+        }
       }
     }
   }

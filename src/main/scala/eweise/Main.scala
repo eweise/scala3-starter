@@ -34,7 +34,11 @@ object MinimalApplication extends cask.MainRoutes {
   val todoRepo = TodoRepository()
 
   @cask.get("/")
-  def ping() = "todos"
+  def ping() =
+    if 1 == 1 then
+      "todos"
+    else
+      cask.Abort(404)
 
   @cask.get("/todos")
   def findAllTodos() =
@@ -52,8 +56,17 @@ object MinimalApplication extends cask.MainRoutes {
           todoRepo.createTodo(todoRequest.toModel())
         }
 
-  @cask.post("/todo/:id/complete")
-  def complete(id: String) = todoRepo.complete(UUID.fromString(id), true)
+  @cask.put("/todo/:id/complete")
+  def complete(id: String) =
+    val uuid = UUID.fromString(id)
+    val result = todoRepo.complete(uuid, true)
+    result match
+      case Left(ex) =>
+        ex match
+          case e: InternalException => cask.Abort(500)
+          case e: NotFoundException => cask.Abort(404)
+          throw ex
+      case Right(()) => ""
 
   initialize()
 }
