@@ -8,6 +8,7 @@ import org.scalatest.*
 import matchers.should.*
 import matchers.should.Matchers.*
 
+import java.util.UUID
 import scala.Right
 
 class TodoRepositoryTestSuite extends AnyFunSuite {
@@ -50,4 +51,19 @@ class TodoRepositoryTestSuite extends AnyFunSuite {
       }
     }
   }
+  test("retrieve a todo") {
+    withFixture {
+      DB localTx { implicit session =>
+        val repo = TodoRepository()
+        val result = repo.getTodo(UUID.randomUUID())
+        assert(result == None)
+
+        val newTodo = Todo(title = "hello", description = Some("world"))
+        repo.createTodo(newTodo)
+        val result2 = repo.getTodo(newTodo.id.get)
+        assert( result2 == Some(newTodo))
+      }
+    }
+  }
+
 }

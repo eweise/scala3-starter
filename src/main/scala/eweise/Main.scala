@@ -31,12 +31,15 @@ object MinimalApplication extends cask.MainRoutes {
 
   new Migrator(conf)
 
-  val todoRepo = TodoRepository()
+  val todoRepo:TodoRepository = TodoRepository()
+
+  override def debugMode: Boolean = false
 
   @cask.get("/")
-  def ping() =
+  def ping(): cask.model.Response[String] =
     if 1 == 1 then
-      "todos"
+      throw Exception("kaboom")
+      cask.Response("great job")
     else
       cask.Abort(404)
 
@@ -49,8 +52,8 @@ object MinimalApplication extends cask.MainRoutes {
   def postTodo(request: cask.Request) =
     val text = request.text()
     decode[TodoRequest](text) match
-      case Left(failure) =>
-        println(failure)
+      case Left(ex) =>
+        throw ex
       case Right(todoRequest) =>
         DB localTx { implicit session =>
           todoRepo.createTodo(todoRequest.toModel())
@@ -63,9 +66,8 @@ object MinimalApplication extends cask.MainRoutes {
     result match
       case Left(ex) =>
         ex match
-          case e: InternalException => cask.Abort(500)
           case e: NotFoundException => cask.Abort(404)
-          throw ex
+        throw ex
       case Right(()) => ""
 
   initialize()

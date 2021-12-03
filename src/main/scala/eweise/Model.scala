@@ -8,6 +8,7 @@ import java.util.UUID
 
 class ValidationException(msg: String) extends RuntimeException(msg)
 class NotFoundException(tag:String, id:UUID) extends RuntimeException(s"$tag with ID: $id not found")
+class EntityAlreadyExistsException(tag:String, id:UUID) extends RuntimeException(s"$tag with ID: $id already exists")
 class InternalException extends RuntimeException()
 
 case class Todo(
